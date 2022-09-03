@@ -13,7 +13,6 @@ import com.shakawat.learn_mvp.login.presenter.LogInPresenterImplementation;
 public class LogInActivity extends AppCompatActivity implements ILoginView{
 
     ActivityLoginBinding binding;
-
     private ILogInPresenter logInPresenter;
 
 
@@ -24,12 +23,12 @@ public class LogInActivity extends AppCompatActivity implements ILoginView{
         setContentView(binding.getRoot());
 
         logInPresenter= new LogInPresenterImplementation(this);
-
-        binding.progressId.setVisibility(View.INVISIBLE);
+        logInPresenter.setProgressBarVisibility(View.INVISIBLE);
 
         binding.submitSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                logInPresenter.setProgressBarVisibility(View.VISIBLE);
                 logInPresenter.doLogin(binding.mailIDSignIn.getText().toString(),binding.passwordSignIn.getText().toString());
             }
         });
@@ -38,6 +37,7 @@ public class LogInActivity extends AppCompatActivity implements ILoginView{
 
     @Override
     public void onLoginSuccess(String msg) {
+        logInPresenter.setProgressBarVisibility(View.INVISIBLE);
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
@@ -48,6 +48,6 @@ public class LogInActivity extends AppCompatActivity implements ILoginView{
 
     @Override
     public void onSetProgressBarVisibility(int visibility) {
-
+        binding.progressId.setVisibility(visibility);
     }
 }
