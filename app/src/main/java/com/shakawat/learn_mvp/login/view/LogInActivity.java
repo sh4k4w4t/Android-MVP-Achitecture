@@ -3,29 +3,47 @@ package com.shakawat.learn_mvp.login.view;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
-import com.shakawat.learn_mvp.databinding.ActivityMainBinding;
+import com.shakawat.learn_mvp.databinding.ActivityLoginBinding;
+import com.shakawat.learn_mvp.login.presenter.ILogInPresenter;
+import com.shakawat.learn_mvp.login.presenter.LogInPresenterImplementation;
 
 public class LogInActivity extends AppCompatActivity implements ILoginView{
 
-    ActivityMainBinding binding;
+    ActivityLoginBinding binding;
+
+    private ILogInPresenter logInPresenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(ActivityMainBinding.inflate(getLayoutInflater()).getRoot());
+        binding=ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
+        logInPresenter= new LogInPresenterImplementation(this);
+
+        binding.progressId.setVisibility(View.INVISIBLE);
+
+        binding.submitSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logInPresenter.doLogin(binding.mailIDSignIn.getText().toString(),binding.passwordSignIn.getText().toString());
+            }
+        });
 
     }
 
     @Override
     public void onLoginSuccess(String msg) {
-
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onLoginError(String msg) {
-
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
